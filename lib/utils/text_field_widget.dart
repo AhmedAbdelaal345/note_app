@@ -96,7 +96,7 @@ final  TextEditingController titleController;
                   fontSize: 16,
                 ),
               ),
-            )
+            ),
       ],
     );
   }

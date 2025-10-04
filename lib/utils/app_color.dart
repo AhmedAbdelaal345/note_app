@@ -7,4 +7,6 @@ abstract class AppColor {
   static const Color whiteColor = Color(0xffffffff);
   static const Color buttonColor = Color(0xff0AD9D9);
   static const Color red = Colors.red;
+  static const Color green = Colors.green;
+  static const Color blue = Colors.blue;
 }

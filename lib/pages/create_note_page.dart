@@ -10,7 +10,7 @@ import 'package:note_app/utils/text_field_widget.dart';
 
 class CreateNotePage extends StatefulWidget {
   const CreateNotePage({super.key});
-
+  static final String id = "/create_note_page";
   @override
   State<CreateNotePage> createState() => _CreateNotePageState();
 }
