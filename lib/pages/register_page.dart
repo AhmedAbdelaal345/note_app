@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app/cubit/login_state.dart';
-import 'package:note_app/cubit/register_cubit.dart';
+import 'package:note_app/manager/login_cubit/login_state.dart';
+import 'package:note_app/manager/register_cubit/register_cubit.dart';
 import 'package:note_app/pages/create_note_page.dart';
 import 'package:note_app/utils/app_color.dart';
 import 'package:note_app/utils/elevated_button_widget.dart';
@@ -17,6 +17,7 @@ class RegisterPage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -46,7 +47,13 @@ class RegisterPage extends StatelessWidget {
                 backgroundColor: AppColor.green,
               ),
             );
-            Navigator.pushReplacementNamed(context, CreateNotePage.id);
+            Navigator.pushReplacementNamed(
+              context,
+              CreateNotePage.id,
+              arguments: BlocProvider.of<RegisterCubit>(
+                context,
+              ).credential!.user!.uid,
+            );
           }
           if (state is LoadingState) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +74,7 @@ class RegisterPage extends StatelessWidget {
                   children: [
                     SizedBox(height: height * 0.1),
                     Text(
-                      'Register Page',
+                      'Welcome To Note App',
                       style: TextStyle(
                         color: AppColor.textColor,
                         fontSize: 24,
@@ -98,6 +105,15 @@ class RegisterPage extends StatelessWidget {
                           BlocProvider.of<RegisterCubit>(context).userRegister(
                             emailController.text,
                             passwordController.text,
+                          );
+                          BlocProvider.of<RegisterCubit>(
+                            context,
+                          ).addUserToFirestore(
+                            emailController.text,
+                            passwordController.text,
+                            BlocProvider.of<RegisterCubit>(
+                              context,
+                            ).credential!.user!.uid,
                           );
                         }
                       },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app/cubit/login_cubit.dart';
-import 'package:note_app/cubit/login_state.dart';
+import 'package:note_app/manager/login_cubit/login_cubit.dart';
+import 'package:note_app/manager/login_cubit/login_state.dart';
 import 'package:note_app/pages/create_note_page.dart';
 import 'package:note_app/pages/register_page.dart';
 import 'package:note_app/utils/app_color.dart';
@@ -14,10 +14,11 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -47,7 +48,11 @@ class LoginPage extends StatelessWidget {
                 backgroundColor: AppColor.green,
               ),
             );
-            Navigator.pushReplacementNamed(context, CreateNotePage.id);
+            Navigator.pushReplacementNamed(
+              context,
+              CreateNotePage.id,
+              arguments: BlocProvider.of<LoginCubit>(context).user!.user!.uid,
+            );
           }
           if (state is LoadingState) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -68,7 +73,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     SizedBox(height: height * 0.1),
                     Text(
-                      'Login Page',
+                      'Welcome Back',
                       style: TextStyle(
                         color: AppColor.textColor,
                         fontSize: 24,
@@ -109,12 +114,14 @@ class LoginPage extends StatelessWidget {
                       height: height,
                       text: "Sign up With Google",
                       onPressed: () {
-                        BlocProvider.of<LoginCubit>(context).loginInWithGoogle();
+                        BlocProvider.of<LoginCubit>(
+                          context,
+                        ).loginInWithGoogle();
                       },
                       width: width,
                     ),
                     SizedBox(height: height * 0.02),
-                    Divider(color: AppColor.borderColor,thickness: 0.2,),
+                    Divider(color: AppColor.borderColor, thickness: 0.2),
                     SizedBox(height: height * 0.02),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
